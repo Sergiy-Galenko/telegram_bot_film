@@ -1,7 +1,7 @@
 import logging
 import gettext
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, CallbackContext
+from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, CallbackContext, MessageHandler
 
 import requests
 from requests.sessions import Session
@@ -40,7 +40,12 @@ def button_callback(update: Update, context: CallbackContext):
     elif query.data == "button4":
         response_text = "Ви натиснули кнопку Аніме."
 
-    query.edit_message_text(text=response_text)
+
+def handle_text(update, context):
+    # получаем текст сообщения от пользователя
+    text = update.message.text
+    # отправляем пользователю ответное сообщение
+    update.message.reply_text(f"Вы написали: {text}")
 
 
 def language(update: Update, context: CallbackContext):
@@ -62,7 +67,7 @@ def language(update: Update, context: CallbackContext):
 
 
 def main():
-    updater = Updater(TOKEN, request_kwargs={'session': session})
+    updater = Updater(TOKEN)
 
     dispatcher = updater.dispatcher
     dispatcher.add_handler(CommandHandler("start", start))
