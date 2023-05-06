@@ -3,8 +3,15 @@ import gettext
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, CallbackContext
 
-# Установите свой токен, который вы получили у BotFather
-TOKEN = "YOUR_TELEGRAM_BOT_TOKEN"
+import requests
+from requests.sessions import Session
+
+
+# Set your Telegram bot token received from BotFather
+TOKEN = "5845703570:AAFlOF_HbqpJtWfrplzbpBIh0lpmCyucPHo"
+
+# Create a session object to use for requests
+session = Session()
 
 
 def start(update: Update, context: CallbackContext):
@@ -18,6 +25,7 @@ def start(update: Update, context: CallbackContext):
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
     update.message.reply_text("Виберіть кнопку:", reply_markup=reply_markup)
+
 
 def button_callback(update: Update, context: CallbackContext):
     query = update.callback_query
@@ -33,6 +41,7 @@ def button_callback(update: Update, context: CallbackContext):
         response_text = "Ви натиснули кнопку Аніме."
 
     query.edit_message_text(text=response_text)
+
 
 def language(update: Update, context: CallbackContext):
     user = update.message.from_user
@@ -51,8 +60,9 @@ def language(update: Update, context: CallbackContext):
     reply_markup = InlineKeyboardMarkup(lang_keyboard)
     update.message.reply_text(_("Оберіть мову:"), reply_markup=reply_markup)
 
+
 def main():
-    updater = Updater(TOKEN, use_context=True)
+    updater = Updater(TOKEN, request_kwargs={'session': session})
 
     dispatcher = updater.dispatcher
     dispatcher.add_handler(CommandHandler("start", start))
@@ -61,6 +71,7 @@ def main():
 
     updater.start_polling()
     updater.idle()
+
 
 if __name__ == "__main__":
     main()
