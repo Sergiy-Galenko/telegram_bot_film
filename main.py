@@ -1,8 +1,9 @@
 import logging
+import gettext
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, CallbackContext
 
-# Встановіть свій токен, який вам надав BotFather
+# Установите свой токен, который вы получили у BotFather
 TOKEN = "YOUR_TELEGRAM_BOT_TOKEN"
 
 
@@ -27,11 +28,14 @@ def button_callback(update: Update, context: CallbackContext):
     elif query.data == "button2":
         response_text = "Ви натиснули кнопку 2."
     elif query.data == "button3":
+        response_text = "Ви натиснули кнопку 3."
+    elif query.data == "button4":
         response_text = "Ви натиснули кнопку Аніме."
 
     query.edit_message_text(text=response_text)
 
 def language(update: Update, context: CallbackContext):
+    user = update.message.from_user
 
     lang_code = user.language_code
 
@@ -43,6 +47,9 @@ def language(update: Update, context: CallbackContext):
             InlineKeyboardButton("🇺🇸 English", callback_data="en"),
             InlineKeyboardButton("🇺🇦 Українська", callback_data="uk"),
         ]
+    ]
+    reply_markup = InlineKeyboardMarkup(lang_keyboard)
+    update.message.reply_text(_("Оберіть мову:"), reply_markup=reply_markup)
 
 def main():
     updater = Updater(TOKEN, use_context=True)
@@ -50,13 +57,10 @@ def main():
     dispatcher = updater.dispatcher
     dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(CallbackQueryHandler(button_callback))
+    dispatcher.add_handler(CommandHandler("language", language))
 
     updater.start_polling()
     updater.idle()
 
 if __name__ == "__main__":
     main()
-=======
-def sum():
-    pass
->>>>>>> Stashed changes
