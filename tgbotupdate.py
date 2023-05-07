@@ -2,9 +2,11 @@ import telegram
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler
 
-TOKEN = '5845703570:AAFlOF_HbqpJtWfrplzbpBIh0lpmCyucPHo'
+TOKEN = 'your_token_here'
 
 DEFAULT_LANG = 'en'
+
+bot = telegram.Bot(token=TOKEN)
 
 # Функция, которая будет вызываться при старте бота
 def start(update, context):
@@ -42,10 +44,11 @@ def get_language_keyboard():
 def get_keyboard():
     keyboard = [[InlineKeyboardButton(MESSAGES[DEFAULT_LANG]['change_lang'], callback_data='change_lang')]]
     return InlineKeyboardMarkup(keyboard)
+
 # функция интерфейса
 def create_interface():
     # кнопка що нового
-    keyboard = [[InlineKeyboardButton("Что нового?", url=("")]]
+    keyboard = [[InlineKeyboardButton("Что нового?", url="https://example.com")]]
     reply_markup = InlineKeyboardMarkup(keyboard)
 
     # Отправляем сообщение в канал с кнопкой "Что нового"
@@ -53,3 +56,15 @@ def create_interface():
 
 # Вызываем функцию для создания интерфейса пользователя
 create_interface()
+
+# Создаем экземпляр класса Updater и передаем ему токен
+updater = Updater(TOKEN, use_context=True)
+
+# регистр обработки команд
+updater.dispatcher.add_handler(CommandHandler('start', start))
+updater.dispatcher.add_handler(CallbackQueryHandler(change_lang, pattern='change_lang'))
+updater.dispatcher.add_handler(CallbackQueryHandler(select_language))
+
+# цикл приема и обработки команд
+updater.start_polling()
+updater.idle
