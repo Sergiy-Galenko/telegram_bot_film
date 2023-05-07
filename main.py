@@ -77,6 +77,74 @@ def main():
     updater.start_polling()
     updater.idle()
 
+import requests
+import json
+
+# Установите свой токен, который вы получили у BotFather
+TOKEN = "5845703570:AAFlOF_HbqpJtWfrplzbpBIh0lpmCyucPHo"
+
+# Определяем URL-адрес для отправки запросов к Telegram API
+API_URL = f"https://api.telegram.org/bot{TOKEN}/"
+
+def send_message(chat_id, text, reply_markup=None):
+    # Формируем параметры запроса к Telegram API для отправки сообщения
+    params = {"chat_id": chat_id, "text": text}
+    if reply_markup:
+        params["reply_markup"] = json.dumps(reply_markup)
+
+    # Отправляем запрос к Telegram API для отправки сообщения
+    response = requests.post(API_URL + "sendMessage", json=params)
+
+    # Возвращаем ответ в формате JSON
+    return response.json()
+
+def start(update):
+    chat_id = update["message"]["chat"]["id"]
+    keyboard = {
+        "inline_keyboard": [[{"text": "Кнопка 1", "callback_data": "button1"},
+                             {"text": "Кнопка 2", "callback_data": "button2"},
+                             {"text": "Кнопка 3", "callback_data": "button3"}]]
+    }
+    reply_markup = json.dumps(keyboard)
+    send_message(chat_id, "Выберите кнопку:", reply_markup)
+
+def button_callback(update):
+    chat_id = update["callback_query"]["message"]["chat"]["id"]
+    query_id = update["callback_query"]["id"]
+    button_data = update["callback_query"]["data"]
+
+    if button_data == "button1":
+        response_text = "Вы нажали кнопку 1."
+    elif button_data == "button2":
+        response_text = "Вы нажали кнопку 2."
+    elif button_data == "button3":
+        response_text = "Вы нажали кнопку 3."
+
+    # Отправляем ответ на нажатие кнопки
+    response = {"text": response_text, "callback_query_id": query_id}
+    send_message(chat_id, json.dumps(response))
+
+def get_updates(offset=None):
+    # Формируем параметры запроса к Telegram API для получения обновлений
+    params = {"timeout": 100, "offset": offset}
+
+    # Отправляем запрос к Telegram API для получения обновлений
+    response = requests.get(API_URL + "getUpdates", json=params)
+
+    # Возвращаем ответ в формате JSON
+    return response.json()
+
+def main():
+    offset = None
+    while True:
+        updates = get_updates(offset)
+        for update in updates["result"]:
+            if "message" in update:
+                start(update)
+            elif "callback_query" in update:
+                button_callback(update)
+            offset = update["update_id"] + 1
+
 
 if __name__ == "__main__":
     main()
