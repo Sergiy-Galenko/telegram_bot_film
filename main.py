@@ -1,4 +1,4 @@
-
+import gettext
 import logging
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, CallbackContext
@@ -34,7 +34,7 @@ def button_callback(update: Update, context: CallbackContext):
 
 def language(update: Update, context: CallbackContext):
 
-    lang_code = user.language_code
+    lang_code = update.effective_user.language_code
 
     lang = gettext.translation("messages", "locale", [lang_code], fallback=True)
     _ = lang.gettext
@@ -44,6 +44,8 @@ def language(update: Update, context: CallbackContext):
             InlineKeyboardButton("🇺🇸 English", callback_data="en"),
             InlineKeyboardButton("🇺🇦 Українська", callback_data="uk"),
         ]
+    ]
+
 
 def main():
     updater = Updater(TOKEN, use_context=True)
