@@ -9,16 +9,16 @@ DEFAULT_LANG = 'en'
 bot = telegram.Bot(token=TOKEN)
 
 # Функция, которая будет вызываться при старте бота
-def start(update, context):
+def start(update, context, massages=None):
     # Отправляем приветственное сообщение на языке по умолчанию
-    update.message.reply_text(MESSAGES[DEFAULT_LANG][""], reply_markup=get_keyboard())
+    update.message.reply_text(massages[DEFAULT_LANG][""], reply_markup=get_keyboard())
 
-def change_lang(update, context):
+def change_lang(update, context, massages=None):
     # Отправляем меню с выбором языка
-    update.callback_query.message.edit_text(text=MESSAGES[DEFAULT_LANG]['change_lang'], reply_markup=get_language_keyboard())
+    update.callback_query.message.edit_text(text=massages[DEFAULT_LANG]['change_lang'], reply_markup=get_language_keyboard())
 
 # Функция, которая будет вызываться при выборе языка из меню
-def select_language(update, context):
+def select_language(update, context, massages=None):
     # Получаем выбранный язык из callback_data
     query = update.callback_query
     lang = query.data
@@ -28,7 +28,7 @@ def select_language(update, context):
     DEFAULT_LANG = lang
 
     # Отправляем сообщение на новом языке
-    query.message.edit_text(text=MESSAGES[DEFAULT_LANG]['hello'], reply_markup=get_keyboard())
+    query.message.edit_text(text=massages[DEFAULT_LANG]['hello'], reply_markup=get_keyboard())
 
 # Функция для создания клавиатуры с выбором языка
 def get_language_keyboard():
@@ -41,8 +41,8 @@ def get_language_keyboard():
     return InlineKeyboardMarkup(keyboard)
 
 # функция кнопки "змінити мову"
-def get_keyboard():
-    keyboard = [[InlineKeyboardButton(MESSAGES[DEFAULT_LANG]['change_lang'], callback_data='change_lang')]]
+def get_keyboard(massages=None):
+    keyboard = [[InlineKeyboardButton(massages[DEFAULT_LANG]['change_lang'], callback_data='change_lang')]]
     return InlineKeyboardMarkup(keyboard)
 
 # функция интерфейса
