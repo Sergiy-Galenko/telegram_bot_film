@@ -2,16 +2,17 @@ import logging
 import gettext
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, CallbackContext, MessageHandler
-
+from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, CallbackContext, MessageHandler, Filters
 import requests
 from requests.sessions import Session
-
 
 # Set your Telegram bot token received from BotFather
 TOKEN = "5845703570:AAFlOF_HbqpJtWfrplzbpBIh0lpmCyucPHo"
 
 # Create a session object to use for requests
-session = Session()
+
+TOKEN = "5845703570:AAFlOF_HbqpJtWfrplzbpBIh0lpmCyucPHo"
+
 
 
 def start(update: Update, context: CallbackContext):
@@ -48,6 +49,14 @@ def handle_text(update, context):
     update.message.reply_text(f"Вы написали: {text}")
 
 
+
+def handle_text(update, context):
+
+    text = update.message.text
+
+    update.message.reply_text(f"Вы написали: {text}")
+
+
 def language(update: Update, context: CallbackContext):
     user = update.message.from_user
 
@@ -73,6 +82,7 @@ def main():
     dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(CallbackQueryHandler(button_callback))
     dispatcher.add_handler(CommandHandler("language", language))
+    dispatcher.add_handler(MessageHandler(Filters.text, handle_text))
 
     updater.start_polling()
     updater.idle()
