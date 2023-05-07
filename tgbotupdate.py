@@ -68,3 +68,4 @@ updater.dispatcher.add_handler(CallbackQueryHandler(select_language))
 # цикл приема и обработки команд
 updater.start_polling()
 updater.idle
+#131
