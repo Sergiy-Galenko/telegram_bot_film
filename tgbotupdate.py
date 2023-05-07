@@ -45,7 +45,7 @@ def get_keyboard():
 # функция интерфейса
 def create_interface():
     # кнопка що нового
-    keyboard = [[InlineKeyboardButton("Что нового?", url=("")]]
+    keyboard = [[InlineKeyboardButton("Что нового?", url=(""))]]
     reply_markup = InlineKeyboardMarkup(keyboard)
 
     # Отправляем сообщение в канал с кнопкой "Что нового"
