@@ -6,7 +6,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 TOKEN = "5845703570:AAFlOF_HbqpJtWfrplzbpBIh0lpmCyucPHo"
 
-def film(update: Update, context: CallbackContext) -> None:
+def serials(update: Update, context: CallbackContext) -> None:
     keyboard = [[InlineKeyboardButton("Комедії", callback_data='Комедії'), 
                 InlineKeyboardButton("Жахи", callback_data='Жахи')],
                 [InlineKeyboardButton("Драми", callback_data='Драми'), 
@@ -15,7 +15,7 @@ def film(update: Update, context: CallbackContext) -> None:
                 InlineKeyboardButton("Бойовики", callback_data='Бойовики')]]
 
     reply_markup = InlineKeyboardMarkup(keyboard)
-    update.message.reply_text('Виберіть жанр фільму:', reply_markup=reply_markup)
+    update.message.reply_text('Виберіть жанр серіалу:', reply_markup=reply_markup)
 
 def button(update: Update, context: CallbackContext) -> None:
     query = update.callback_query
@@ -25,7 +25,7 @@ def button(update: Update, context: CallbackContext) -> None:
 
 def main() -> None:
     updater = Updater(TOKEN, use_context=True)
-    updater.dispatcher.add_handler(CommandHandler('film', film))
+    updater.dispatcher.add_handler(CommandHandler('serials', serials))
     updater.dispatcher.add_handler(CallbackQueryHandler(button))
     updater.start_polling()
     updater.idle()
