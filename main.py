@@ -1,62 +1,54 @@
 import requests
 from bs4 import BeautifulSoup
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, CallbackContext
+import random
+import http.client
 
-def get_movie_info(search_query):
-    base_url = 'https://rezka.ag/'
-    search_url = f"{base_url}?q={search_query}"
-    response = requests.get(search_url)
+from fake_useragent import UserAgent
 
-    if response.status_code == 200:
-        soup = BeautifulSoup(response.text, 'html.parser')
-        movie_title_selector = 'div.movie-title'
-        movie_image_selector = 'img.movie-image'
-        movie_title = soup.select_one(movie_title_selector)
-        movie_image = soup.select_one(movie_image_selector)
+http.client.HTTPConnection._http_vsn_str = 'HTTP/1.0'
+http.client.HTTPConnection._http_vsn = 10
 
-        if movie_title and movie_image:
-            return {'title': movie_title.text.strip(), 'image': movie_image['src']}
-        else:
-            return None
-    else:
-        print(f"Error: {response.status_code}")
-        return None
+BASE_URL = 'https://rezka.ag/films/action/page/'
+IMAGE_BASE_URL = 'https://rezka.ag'
 
-TOKEN = "5845703570:AAFlOF_HbqpJtWfrplzbpBIh0lpmCyucPHo"
+def get_random_action_movie():
+    ua = UserAgent()
+    headers = {'User-Agent': ua.random}
 
-def start(update: Update, context: CallbackContext):
-    keyboard = [[InlineKeyboardButton("Select language", callback_data="button1"),
-                 InlineKeyboardButton("Button 1", callback_data="button2"),
-                 InlineKeyboardButton("Button 2", callback_data="button3"),
-                 InlineKeyboardButton("Anime", callback_data="button4")]]
-    reply_markup = InlineKeyboardMarkup(keyboard)
-    update.message.reply_text("Choose a button:", reply_markup=reply_markup)
+    # Получаем случайную страницу из списка боевиков
+    random_page = random.randint(1, 50)
+    url = f'{BASE_URL}{random_page}/'
+    
+    success = False
+    while not success:
+        try:
+            response = requests.get(url, headers=headers)
+            success = True
+        except:
+            pass
 
-def button_callback(update: Update, context: CallbackContext):
-    query = update.callback_query
-    query.answer()
+    soup = BeautifulSoup(response.text, 'html.parser')
 
-    if query.data == "button1":
-        lang_keyboard = [[InlineKeyboardButton("🇺🇸 English", callback_data="en"),
-                          InlineKeyboardButton("🇺🇦 Українська", callback_data="uk")]]
-        reply_markup = InlineKeyboardMarkup(lang_keyboard)
-        query.edit_message_text(text="Choose a language:", reply_markup=reply_markup)
-    elif query.data in ["button2", "button3"]:
-        response_text = f"You pressed {query.data}."
-        query.edit_message_text(text=response_text)
-    elif query.data == "button4":
-        response_text = "You pressed Anime."
-        query.edit_message_text(text=response_text)
+    # Выбираем случайный фильм из списка на странице
+    movie_blocks = soup.find_all('div', class_='b-content__inline_item')
+    random_movie_block = random.choice(movie_blocks)
+    movie_link = random_movie_block.find('a', class_='b-content__inline_item-link')
 
-def main():
-    updater = Updater(TOKEN, use_context=True)
-    dispatcher = updater.dispatcher
-    dispatcher.add_handler(CommandHandler("start", start))
-    dispatcher.add_handler(CallbackQueryHandler(button_callback))
+    title = movie_link['title']
+    movie_url = movie_link['href']
+    image_url = IMAGE_BASE_URL + random_movie_block.find('img')['src']
+    rating = random_movie_block.find('div', class_='b-inline__rating').text.strip()
 
-    updater.start_polling()
-    updater.idle()
+    return {
+        'title': title,
+        'url': movie_url,
+        'image': image_url,
+        'rating': rating,
+    }
 
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    random_action_movie = get_random_action_movie()
+    print('Название:', random_action_movie['title'])
+    print('Ссылка:', random_action_movie['url'])
+    print('Изображение:', random_action_movie['image'])
+    print('Рейтинг:', random_action_movie['rating'])
