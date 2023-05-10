@@ -9,33 +9,31 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 TOKEN = "5845703570:AAFlOF_HbqpJtWfrplzbpBIh0lpmCyucPHo"
 
 def film(update: Update, context: CallbackContext) -> None:
-    query = update.callback_query
-    if query.data == 'Фильмы':
-        keyboard = [[InlineKeyboardButton("Комедії", callback_data='Комедії'), 
-                    InlineKeyboardButton("Жахи", callback_data='Жахи')],
-                    [InlineKeyboardButton("Драми", callback_data='Драми'), 
-                    InlineKeyboardButton("Фантастика", callback_data='Фантастика')],
-                    [InlineKeyboardButton("Трилери", callback_data='Трилери'), 
-                    InlineKeyboardButton("Бойовики", callback_data='Бойовики')]
-                    [InlineKeyboardButton("Історичний", callback_data="Історичний"), 
-                    InlineKeyboardButton("Бойовик", callback_data="Бойовик")]
-                    [InlineKeyboardButton("Вестерн", callback_data="Вестерн"),
-                    InlineKeyboardButton("Військовий", callback_data="Військовий")]
-                    [InlineKeyboardButton("Детектив", callback_data="Детектив"),
-                    InlineKeyboardButton("Документальний", callback_data="Документальний")]
-                    [InlineKeyboardButton("Драма", callback_data="Драма"),
-                    InlineKeyboardButton("Жахи", callback_data="Жахи")]
-                    [InlineKeyboardButton("Комедія", callback_data="Комедія"),
-                    InlineKeyboardButton("Кримінал", callback_data="Кримінал")]
-                    [InlineKeyboardButton("Мелодрама", callback_data="Мелодрама"),
-                    InlineKeyboardButton("Музика", callback_data="Музика")]
-                    [InlineKeyboardButton("Мультфільм", callback_data="Мультфільм"),
-                    InlineKeyboardButton("Пригоди", callback_data="Пригоди")]
-                    [InlineKeyboardButton("Сімейний", callback_data="Сімейний"),
-                    InlineKeyboardButton("Телефільм", callback_data="Телефільм")]
-                    [InlineKeyboardButton("Трилер", callback_data="Трилер"),
-                    InlineKeyboardButton("Фантастика", callback_data="Фантастика")]
-                    [InlineKeyboardButton("Фентезі", callback_data="Фентезі")]]
+    keyboard = [[InlineKeyboardButton("Комедії", callback_data='Comedies'), 
+                InlineKeyboardButton("Жахи", callback_data='Horrors')],
+                [InlineKeyboardButton("Драми", callback_data='Drami'), 
+                InlineKeyboardButton("Фантастика", callback_data='Fantastic')],
+                [InlineKeyboardButton("Трилери", callback_data='Trilery'), 
+                InlineKeyboardButton("Бойовики", callback_data='fighters')]
+                [InlineKeyboardButton("Історичний", callback_data="historical"), 
+                InlineKeyboardButton("Бойовик", callback_data="action")]
+                [InlineKeyboardButton("Вестерн", callback_data="western"),
+                InlineKeyboardButton("Військовий", callback_data="military")]
+                [InlineKeyboardButton("Детектив", callback_data="detective"),
+                InlineKeyboardButton("Документальний", callback_data="documentary")]
+                [InlineKeyboardButton("Драма", callback_data="drama"),
+                InlineKeyboardButton("Жахи", callback_data="horror")]
+                [InlineKeyboardButton("Комедія", callback_data="comedy"),
+                InlineKeyboardButton("Кримінал", callback_data="crime")]
+                [InlineKeyboardButton("Мелодрама", callback_data="melodrama"),
+                InlineKeyboardButton("Музика", callback_data="music")]
+                [InlineKeyboardButton("Мультфільм", callback_data="animation"),
+                InlineKeyboardButton("Пригоди", callback_data="adventure")]
+                [InlineKeyboardButton("Сімейний", callback_data="family"),
+                InlineKeyboardButton("Телефільм", callback_data="tv_movie")]
+                [InlineKeyboardButton("Трилер", callback_data="thriller"),
+                InlineKeyboardButton("Фантастика", callback_data="fantastic")]
+                [InlineKeyboardButton("Фентезі", callback_data="fantasy")]]
 
     reply_markup = InlineKeyboardMarkup(keyboard)
     update.message.reply_text('Виберіть жанр фільму:', reply_markup=reply_markup)
