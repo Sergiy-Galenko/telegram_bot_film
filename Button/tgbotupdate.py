@@ -96,7 +96,7 @@ def phone_number(update, context):
 updater = Updater(token=TOKEN, use_context=True)
 dispatcher = updater.dispatcher
 dispatcher.add_handler(CommandHandler('start', start))
-dispatcher.add_handler(MessageHandler(Filters.text(['Количество подписчиков', 'Количество подписчиков?']), count))
+dispatcher.add_handler(MessageHandler(Filters.text(['Кол-во юзерів', 'Колво юзерів?']), count))
 dispatc
 
 
