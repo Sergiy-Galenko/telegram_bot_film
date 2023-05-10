@@ -2,8 +2,11 @@ from aiogram.bot import bot
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CommandHandler, CallbackQueryHandler, Updater
 
+HEAD
 import random
 TOKEN = 'your_token_here'
+TOKEN = '5845703570:AAFlOF_HbqpJtWfrplzbpBIh0lpmCyucPHo'
+c236db9bac1763efe61babc7c7ba34d9076c56f8
 
 DEFAULT_LANG = 'en'
 
