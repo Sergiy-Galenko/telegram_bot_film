@@ -1,6 +1,8 @@
+from aiogram.bot import bot
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CommandHandler, CallbackQueryHandler, Updater
 
+import random
 TOKEN = 'your_token_here'
 
 DEFAULT_LANG = 'en'
@@ -56,6 +58,42 @@ if __name__ == "__main__":
         keyboard = [[InlineKeyboardButton("Читати", url=news_url)]]
         reply_markup = InlineKeyboardMarkup(keyboard)
         context.bot.send_message(chat_id=update.message.chat_id, text=message, reply_markup=reply_markup)
+
+
+def find_film(name, year):
+    pass
+
+
+try:
+
+    film = find_film(name='Название фильма', year='')
+except Exception as e:
+    bot.send_message(chat_id='ваш_chat_id', text='Произошла ошибка: {}'.format(str(e)))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #_________Второй вариант кода_________
 #def start(update, context):
