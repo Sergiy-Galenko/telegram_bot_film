@@ -2,17 +2,21 @@ import logging
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, CallbackContext
 
+import vibor
+
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
 TOKEN = "5845703570:AAFlOF_HbqpJtWfrplzbpBIh0lpmCyucPHo"
 
 def film(update: Update, context: CallbackContext) -> None:
-    keyboard = [[InlineKeyboardButton("Комедії", callback_data='Комедії'), 
-                InlineKeyboardButton("Жахи", callback_data='Жахи')],
-                [InlineKeyboardButton("Драми", callback_data='Драми'), 
-                InlineKeyboardButton("Фантастика", callback_data='Фантастика')],
-                [InlineKeyboardButton("Трилери", callback_data='Трилери'), 
-                InlineKeyboardButton("Бойовики", callback_data='Бойовики')]]
+    query = update.callback_query
+    if query.data == 'Фильмы':
+        keyboard = [[InlineKeyboardButton("Комедії", callback_data='Комедії'), 
+                    InlineKeyboardButton("Жахи", callback_data='Жахи')],
+                    [InlineKeyboardButton("Драми", callback_data='Драми'), 
+                    InlineKeyboardButton("Фантастика", callback_data='Фантастика')],
+                    [InlineKeyboardButton("Трилери", callback_data='Трилери'), 
+                    InlineKeyboardButton("Бойовики", callback_data='Бойовики')]]
 
     reply_markup = InlineKeyboardMarkup(keyboard)
     update.message.reply_text('Виберіть жанр фільму:', reply_markup=reply_markup)
