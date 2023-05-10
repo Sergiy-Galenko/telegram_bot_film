@@ -73,6 +73,33 @@ try:
 except Exception as e:
     bot.send_message(chat_id='ваш_chat_id', text='Произошла ошибка: {}'.format(str(e)))
 
+# функция для обработки сообщения юзера
+def count(update, context):
+    # Получаем список всех подписчиков
+    subscribers = bot.get_chat_members_count(chat_id=update.effective_chat.id)
+    # Записываем количество подписчиков в текстовый файл
+    with open('subscribers.txt', 'a') as file:
+        file.write(f'Количество подписчиков: {subscribers}\n')
+
+# функция с номером телефона
+def phone_number(update, context):
+    # получатель номер телефона
+    phone_number = update.message.contact.phone_number
+    # получатель имя юзера
+    username = update.message.contact.first_name
+    # Записываем данные в текстовый файл
+    with open('subscribers.txt', 'a') as file:
+        file.write(f'{username}: {phone_number}\n')
+
+
+# обьект апдейтер и функции обработки
+updater = Updater(token=TOKEN, use_context=True)
+dispatcher = updater.dispatcher
+dispatcher.add_handler(CommandHandler('start', start))
+dispatcher.add_handler(MessageHandler(Filters.text(['Количество подписчиков', 'Количество подписчиков?']), count))
+dispatc
+
+
 
 
 
