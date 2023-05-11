@@ -9,12 +9,22 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 TOKEN = "5845703570:AAFlOF_HbqpJtWfrplzbpBIh0lpmCyucPHo"
 
 def serials(update: Update, context: CallbackContext) -> None:
-    keyboard = [[InlineKeyboardButton("Комедії", callback_data='Комедії'), 
-                InlineKeyboardButton("Жахи", callback_data='Жахи')],
-                [InlineKeyboardButton("Драми", callback_data='Драми'), 
-                InlineKeyboardButton("Фантастика", callback_data='Фантастика')],
-                [InlineKeyboardButton("Трилери", callback_data='Трилери'), 
-                InlineKeyboardButton("Бойовики", callback_data='Бойовики')]]
+    keyboard = [[InlineKeyboardButton("Вестерн", callback_data="western"), 
+                InlineKeyboardButton("Детектив", callback_data="detective")], 
+                [InlineKeyboardButton("Дитячий", callback_data="children"),
+                InlineKeyboardButton("Документальний", callback_data="documentary")],
+                [InlineKeyboardButton("Драма", callback_data="drama"),
+                InlineKeyboardButton("Екшн і Пригоди", callback_data="action_adventure")],
+                [InlineKeyboardButton("Комедія", callback_data="comedy"),
+                InlineKeyboardButton("Кримінал", callback_data="crime")],
+                [InlineKeyboardButton("Мильна опера", callback_data="soap_opera"),
+                InlineKeyboardButton("Мультфільм", callback_data="animation")],
+                [InlineKeyboardButton("Науково фантастичний", callback_data="sci_fi"),
+                InlineKeyboardButton("Новини", callback_data="news")],
+                [InlineKeyboardButton("Політика та війна", callback_data="politics_war"),
+                InlineKeyboardButton("Реаліті-шоу", callback_data="reality_show")],
+                [InlineKeyboardButton("Сімейний", callback_data="family"),
+                InlineKeyboardButton("Ток-шоу", callback_data="talk_show")]]
 
     reply_markup = InlineKeyboardMarkup(keyboard)
     update.message.reply_text('Виберіть жанр серіалу:', reply_markup=reply_markup)
@@ -34,24 +44,6 @@ def main() -> None:
 
 if __name__ == '__main__':
     main()
-
-# українські назви
-western_button = InlineKeyboardButton("Вестерн", callback_data="western")
-detective_button = InlineKeyboardButton("Детектив", callback_data="detective")
-children_button = InlineKeyboardButton("Дитячий", callback_data="children")
-documentary_button = InlineKeyboardButton("Документальний", callback_data="documentary")
-drama_button = InlineKeyboardButton("Драма", callback_data="drama")
-action_adventure_button = InlineKeyboardButton("Екшн і Пригоди", callback_data="action_adventure")
-comedy_button = InlineKeyboardButton("Комедія", callback_data="comedy")
-crime_button = InlineKeyboardButton("Кримінал", callback_data="crime")
-soap_opera_button = InlineKeyboardButton("Мильна опера", callback_data="soap_opera")
-animation_button = InlineKeyboardButton("Мультфільм", callback_data="animation")
-sci_fi_button = InlineKeyboardButton("Науково фантастичний", callback_data="sci_fi")
-news_button = InlineKeyboardButton("Новини", callback_data="news")
-politics_war_button = InlineKeyboardButton("Політика та війна", callback_data="politics_war")
-reality_show_button = InlineKeyboardButton("Реаліті-шоу", callback_data="reality_show")
-family_button = InlineKeyboardButton("Сімейний", callback_data="family")
-talk_show_button = InlineKeyboardButton("Ток-шоу", callback_data="talk_show")
 
 #англійскі назви
 western_button = InlineKeyboardButton("Western", callback_data="western")
