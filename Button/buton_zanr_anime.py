@@ -9,12 +9,71 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 TOKEN = "5845703570:AAFlOF_HbqpJtWfrplzbpBIh0lpmCyucPHo"
 
 def anime(update: Update, context: CallbackContext) -> None:
-    keyboard = [[InlineKeyboardButton("Комедії", callback_data='Комедії'), 
-                InlineKeyboardButton("Жахи", callback_data='Жахи')],
-                [InlineKeyboardButton("Драми", callback_data='Драми'), 
-                InlineKeyboardButton("Фантастика", callback_data='Фантастика')],
-                [InlineKeyboardButton("Трилери", callback_data='Трилери'), 
-                InlineKeyboardButton("Бойовики", callback_data='Бойовики')]]
+    keyboard = [[InlineKeyboardButton("Кодомо", callback_data="kodomo"),
+                 InlineKeyboardButton("Сьодзьо", callback_data="shoujo")],
+                 [InlineKeyboardButton("Дзьосэй", callback_data="josei"),
+                InlineKeyboardButton("Сьонэн", callback_data="shonen")],
+                [InlineKeyboardButton("Сэйнэн", callback_data="seinen"),
+                InlineKeyboardButton("Традиційні жанри", callback_data="tradition")],
+                [InlineKeyboardButton("Апокаліптика", callback_data="apocalyptic"),
+                InlineKeyboardButton("Безумство", callback_data="madness")],
+                [InlineKeyboardButton("Біопанк", callback_data="biopunk"),
+                InlineKeyboardButton("Бойовик", callback_data="action")],
+                [InlineKeyboardButton("Бойові мистецтва", callback_data="martial_arts"),
+                InlineKeyboardButton("Вампіри", callback_data="vampire")],
+                [InlineKeyboardButton("Військовий", callback_data="military"),
+                InlineKeyboardButton("Гарем", callback_data="harem")],
+                [InlineKeyboardButton("Демони", callback_data="demons"),
+                InlineKeyboardButton("Детектив", callback_data="detective")],
+                [InlineKeyboardButton("Добутсу", callback_data="doujinshi"),
+                InlineKeyboardButton("Драма", callback_data="drama")],
+                [InlineKeyboardButton("Ігри", callback_data="games"),
+                InlineKeyboardButton("Ідоли", callback_data="idol")],
+                [InlineKeyboardButton("Ікудзі", callback_data="ikuzi"),
+                InlineKeyboardButton("Ісекай", callback_data="isekai")],
+                [InlineKeyboardButton("Історичний", callback_data="historical"),
+                InlineKeyboardButton("Кайто", callback_data="kaito")],
+                [InlineKeyboardButton("Кіберпанк", callback_data="cyberpunk"),
+                InlineKeyboardButton("Комедія", callback_data="comedy")],
+                [InlineKeyboardButton("Космічна опера", callback_data="space_opera"),
+                InlineKeyboardButton("Космос", callback_data="space")],
+                [InlineKeyboardButton("Магія", callback_data="magic"),
+                InlineKeyboardButton("Махо-сёдзё", callback_data="maho_shojo")],
+                [InlineKeyboardButton("Машини", callback_data="machines"),
+                InlineKeyboardButton("Меха", callback_data="mecha")],
+                [InlineKeyboardButton("Містика", callback_data="mystic"),
+                InlineKeyboardButton("Моє", callback_data="personal")],
+                [InlineKeyboardButton("Музика", callback_data="music"),
+                InlineKeyboardButton("Мильна опера", callback_data="soap_opera")],
+                [InlineKeyboardButton("Отаку", callback_data="otaku"),
+                InlineKeyboardButton("Парапсихологія", callback_data="parapsychology")],
+                [InlineKeyboardButton("Пародія", callback_data="parody"),
+                InlineKeyboardButton("Паропанк/Стімпанк", callback_data="steampunk")],
+                [InlineKeyboardButton("Повсякденність", callback_data="slice_of_life"),
+                InlineKeyboardButton("Поліцейський бойовик", callback_data="police_action")],
+                [InlineKeyboardButton("Поліція", callback_data="police"),
+                InlineKeyboardButton("Постапокаліптика", callback_data="post_apocalyptic")],
+                [InlineKeyboardButton("Пригоди", callback_data="adventure"),
+                InlineKeyboardButton("Психологічний", callback_data="psychological")],
+                [InlineKeyboardButton("Психологічний трилер", callback_data="psychological_thriller"),
+                InlineKeyboardButton("Реверс-гарем", callback_data="reverse_harem")],
+                [InlineKeyboardButton("Романтика", callback_data="romance"),
+                InlineKeyboardButton("Самураї", callback_data="samurai")],
+                [InlineKeyboardButton("Самурайський бойовик", callback_data="samurai_action"),
+                InlineKeyboardButton("Сверхприродне", callback_data="supernatural")],
+                [InlineKeyboardButton("Сёдзё-ай", callback_data="shoujo_ai"),
+                InlineKeyboardButton("Сёнэн-ай", callback_data="shounen_ai")],
+                [InlineKeyboardButton("Казка", callback_data="fairy_tale"),
+                InlineKeyboardButton("Спокон", callback_data="epic")],
+                [InlineKeyboardButton("Сэнтай", callback_data="sentai"),
+                InlineKeyboardButton("Токусацу", callback_data="tokusatsu")],
+                [InlineKeyboardButton("Трилер", callback_data="thriller"),
+                InlineKeyboardButton("Жахи", callback_data="horror")],
+                [InlineKeyboardButton("Фантастика", callback_data="science_fiction"),
+                InlineKeyboardButton("Фентезі", callback_data="fantasy")],
+                [InlineKeyboardButton("Школа", callback_data="school"),
+                InlineKeyboardButton("Шкільний детектив", callback_data="school_detective")],
+                [InlineKeyboardButton("Екшн", callback_data="action")]]
 
     reply_markup = InlineKeyboardMarkup(keyboard)
     update.message.reply_text('Виберіть жанр аніме:', reply_markup=reply_markup)
@@ -34,73 +93,6 @@ def main() -> None:
 
 if __name__ == '__main__':
     main()
-
-#українські назви
-kodomo_button = InlineKeyboardButton("Кодомо", callback_data="kodomo")
-shoujo_button = InlineKeyboardButton("Сьодзьо", callback_data="shoujo")
-josei_button = InlineKeyboardButton("Дзьосэй", callback_data="josei")
-shonen_button = InlineKeyboardButton("Сьонэн", callback_data="shonen")
-seinen_button = InlineKeyboardButton("Сэйнэн", callback_data="seinen")
-tradition_button = InlineKeyboardButton("Традиційні жанри", callback_data="tradition")
-apocalyptic_button = InlineKeyboardButton("Апокаліптика", callback_data="apocalyptic")
-madness_button = InlineKeyboardButton("Безумство", callback_data="madness")
-biopunk_button = InlineKeyboardButton("Біопанк", callback_data="biopunk")
-action_button = InlineKeyboardButton("Бойовик", callback_data="action")
-martial_arts_button = InlineKeyboardButton("Бойові мистецтва", callback_data="martial_arts")
-vampire_button = InlineKeyboardButton("Вампіри", callback_data="vampire")
-military_button = InlineKeyboardButton("Військовий", callback_data="military")
-harem_button = InlineKeyboardButton("Гарем", callback_data="harem")
-demons_button = InlineKeyboardButton("Демони", callback_data="demons")
-detective_button = InlineKeyboardButton("Детектив", callback_data="detective")
-doujinshi_button = InlineKeyboardButton("Добутсу", callback_data="doujinshi")
-drama_button = InlineKeyboardButton("Драма", callback_data="drama")
-games_button = InlineKeyboardButton("Ігри", callback_data="games")
-idol_button = InlineKeyboardButton("Ідоли", callback_data="idol")
-ikuzi_button = InlineKeyboardButton("Ікудзі", callback_data="ikuzi")
-isekai_button = InlineKeyboardButton("Ісекай", callback_data="isekai")
-historical_button = InlineKeyboardButton("Історичний", callback_data="historical")
-kaito_button = InlineKeyboardButton("Кайто", callback_data="kaito")
-cyberpunk_button = InlineKeyboardButton("Кіберпанк", callback_data="cyberpunk")
-comedy_button = InlineKeyboardButton("Комедія", callback_data="comedy")
-space_opera_button = InlineKeyboardButton("Космічна опера", callback_data="space_opera")
-space_button = InlineKeyboardButton("Космос", callback_data="space")
-magic_button = InlineKeyboardButton("Магія", callback_data="magic")
-maho_shojo_button = InlineKeyboardButton("Махо-сёдзё", callback_data="maho_shojo")
-machines_button = InlineKeyboardButton("Машини", callback_data="machines")
-mecha_button = InlineKeyboardButton("Меха", callback_data="mecha")
-mystic_button = InlineKeyboardButton("Містика", callback_data="mystic")
-personal_button = InlineKeyboardButton("Моє", callback_data="personal")
-music_button = InlineKeyboardButton("Музика", callback_data="music")
-soap_opera_button = InlineKeyboardButton("Мильна опера", callback_data="soap_opera")
-otaku_button = InlineKeyboardButton("Отаку", callback_data="otaku")
-parapsychology_button = InlineKeyboardButton("Парапсихологія", callback_data="parapsychology")
-parody_button = InlineKeyboardButton("Пародія", callback_data="parody")
-steampunk_button = InlineKeyboardButton("Паропанк/Стімпанк", callback_data="steampunk")
-slice_of_life_button = InlineKeyboardButton("Повсякденність", callback_data="slice_of_life")
-police_action_button = InlineKeyboardButton("Поліцейський бойовик", callback_data="police_action")
-police_button = InlineKeyboardButton("Поліція", callback_data="police")
-post_apocalyptic_button = InlineKeyboardButton("Постапокаліптика", callback_data="post_apocalyptic")
-adventure_button = InlineKeyboardButton("Пригоди", callback_data="adventure")
-psychological_button = InlineKeyboardButton("Психологічний", callback_data="psychological")
-psychological_thriller_button = InlineKeyboardButton("Психологічний трилер", callback_data="psychological_thriller")
-reverse_harem_button = InlineKeyboardButton("Реверс-гарем", callback_data="reverse_harem")
-romance_button = InlineKeyboardButton("Романтика", callback_data="romance")
-samurai_button = InlineKeyboardButton("Самураї", callback_data="samurai")
-samurai_action_button = InlineKeyboardButton("Самурайський бойовик", callback_data="samurai_action")
-supernatural_button = InlineKeyboardButton("Сверхприродне", callback_data="supernatural")
-shoujo_ai_button = InlineKeyboardButton("Сёдзё-ай", callback_data="shoujo_ai")
-shounen_ai_button = InlineKeyboardButton("Сёнэн-ай", callback_data="shounen_ai")
-fairy_tale_button = InlineKeyboardButton("Казка", callback_data="fairy_tale")
-epic_button = InlineKeyboardButton("Спокон", callback_data="epic")
-sentai_button = InlineKeyboardButton("Сэнтай", callback_data="sentai")
-tokusatsu_button = InlineKeyboardButton("Токусацу", callback_data="tokusatsu")
-thriller_button = InlineKeyboardButton("Трилер", callback_data="thriller")
-horror_button = InlineKeyboardButton("Жахи", callback_data="horror")
-science_fiction_button = InlineKeyboardButton("Фантастика", callback_data="science_fiction")
-fantasy_button = InlineKeyboardButton("Фентезі", callback_data="fantasy")
-school_button = InlineKeyboardButton("Школа", callback_data="school")
-school_detective_button = InlineKeyboardButton("Шкільний детектив", callback_data="school_detective")
-action_button = InlineKeyboardButton("Екшн", callback_data="action")
 
 #англійскі назви
 kodomo_button = InlineKeyboardButton("Kodomo", callback_data="kodomo")
