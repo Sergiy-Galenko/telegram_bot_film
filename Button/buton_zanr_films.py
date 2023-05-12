@@ -8,6 +8,8 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 TOKEN = "5845703570:AAFlOF_HbqpJtWfrplzbpBIh0lpmCyucPHo"
 
+#class FILM():
+
 def film(update: Update, context: CallbackContext) -> None:
     keyboard = [[InlineKeyboardButton("Комедії", callback_data='Комедії'), 
                 InlineKeyboardButton("Жахи", callback_data='Жахи')],

@@ -8,6 +8,8 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 TOKEN = "5845703570:AAFlOF_HbqpJtWfrplzbpBIh0lpmCyucPHo"
 
+#class SERIALS():
+
 def serials(update: Update, context: CallbackContext) -> None:
     keyboard = [[InlineKeyboardButton("Вестерн", callback_data="western"), 
                 InlineKeyboardButton("Детектив", callback_data="detective")], 

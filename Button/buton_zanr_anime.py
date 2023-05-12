@@ -8,6 +8,8 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 TOKEN = "5845703570:AAFlOF_HbqpJtWfrplzbpBIh0lpmCyucPHo"
 
+#class ANIME():
+
 def anime(update: Update, context: CallbackContext) -> None:
     keyboard = [[InlineKeyboardButton("Кодомо", callback_data="Кодомо"),
                  InlineKeyboardButton("Сьодзьо", callback_data="Сьодзьо")],
