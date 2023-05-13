@@ -16,7 +16,7 @@ def start(update, context):
         [InlineKeyboardButton("1", callback_data='1'),
          InlineKeyboardButton("2", callback_data='2')]
     ]
-#c25fd98d14cff69f8342cc09907587959a1e98bb
+
     reply_markup = InlineKeyboardMarkup(keyboard)
 
     # Отправляем сообщение с вариантами выбора
@@ -27,7 +27,6 @@ def button(update, context):
     query = update.callback_query
     query.answer()
     # Определяем, на какую кнопку нажал пользователь
-#c25fd98d14cff69f8342cc09907587959a1e98bb
     if query.data == '1':
         query.message.reply_text('Привет')
     elif query.data == '2':
@@ -54,7 +53,6 @@ def main():
     updater = Updater('TOKEN')
     # Создаем экземпляр Updater и передаем токен бота
     updater = Updater('YOUR_TOKEN_HERE', use_context=True)
-#c25fd98d14cff69f8342cc09907587959a1e98bb
 
     # Получаем диспетчер для регистрации обработчиков
     dp = updater.dispatcher
@@ -70,4 +68,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-#c25fd98d14cff69f8342cc09907587959a1e98bb
