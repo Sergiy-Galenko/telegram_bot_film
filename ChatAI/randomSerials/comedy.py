@@ -19,16 +19,14 @@ if response.status_code == 200:
         show_id = random_show['id']
         show_title = random_show['name']
         show_rating = random_show['vote_average']
-        show_poster_path = random_show['poster_path']
-        show_poster_url = f"{image_base_url}{show_poster_path}"
+        show_poster_url = f"{image_base_url}{random_show['poster_path']}"
         show_page_url = f"{tmdb_tv_show_url}{show_id}"
 
         # Получение информации о сериале для подсчета количества эпизодов
         tv_show_url = f'{base_url}/tv/{show_id}?api_key={api_key}'
         tv_show_response = requests.get(tv_show_url)
         if tv_show_response.status_code == 200:
-            tv_show_data = tv_show_response.json()
-            episode_count = sum([season['episode_count'] for season in tv_show_data['seasons']])
+            episode_count = sum([season['episode_count'] for season in tv_show_response.json()['seasons']])
             print(f"Рандомный сериал из категории комедий: {show_title}\n"
                   f"Рейтинг: {show_rating}\n"
                   f"Количество эпизодов: {episode_count}\n"
