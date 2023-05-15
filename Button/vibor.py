@@ -11,10 +11,7 @@ TOKEN = "5845703570:AAFlOF_HbqpJtWfrplzbpBIh0lpmCyucPHo"
 def help(update, context):
     update.message.reply_text("Використай команду /menu щоб визвати вікно з вибором того що ти хочеш подивитися.")
 
-#class VIBOR():
-
 def menu(update: Update, context: CallbackContext):
-    # Отправляем сообщение с кнопками
     keyboard = [[InlineKeyboardButton("Сериалы", callback_data='Сериалы'),
                  InlineKeyboardButton("Фильмы", callback_data='Фильмы')],
                 [InlineKeyboardButton("Аниме", callback_data='Аниме')]]

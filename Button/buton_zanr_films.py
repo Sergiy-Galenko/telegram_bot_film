@@ -2,22 +2,18 @@ import logging
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, CallbackContext
 
-import vibor
-
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
 TOKEN = "5845703570:AAFlOF_HbqpJtWfrplzbpBIh0lpmCyucPHo"
 
-#class FILM():
-
 def film(update: Update, context: CallbackContext) -> None:
-    keyboard = [[InlineKeyboardButton("Комедії", callback_data='Комедії'), 
+    keyboard = [[InlineKeyboardButton("Комедії", callback_data='Комедії'),
                 InlineKeyboardButton("Жахи", callback_data='Жахи')],
-                [InlineKeyboardButton("Драми", callback_data='Драми'), 
+                [InlineKeyboardButton("Драми", callback_data='Драми'),
                 InlineKeyboardButton("Фантастика", callback_data='Фантастика')],
                 [InlineKeyboardButton("Трилери", callback_data='Трилери'),
                  InlineKeyboardButton("Бойовики", callback_data='Бойовики')],
-                [InlineKeyboardButton("Історичний", callback_data="Історичний"), 
+                [InlineKeyboardButton("Історичний", callback_data="Історичний"),
                 InlineKeyboardButton("Вестерн", callback_data="Вестерн")],
                 [InlineKeyboardButton("Військовий", callback_data="Військовий"),
                 InlineKeyboardButton("Кримінал", callback_data="Кримінал")],
@@ -49,6 +45,7 @@ def main() -> None:
 
 if __name__ == '__main__':
     main()
+
 
 #англійскі назви
 #action_button = InlineKeyboardButton("Action", callback_data="action")

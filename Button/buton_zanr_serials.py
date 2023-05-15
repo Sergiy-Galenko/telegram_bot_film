@@ -2,17 +2,13 @@ import logging
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, CallbackContext
 
-import vibor
-
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
 TOKEN = "5845703570:AAFlOF_HbqpJtWfrplzbpBIh0lpmCyucPHo"
 
-#class SERIALS():
-
 def serials(update: Update, context: CallbackContext) -> None:
-    keyboard = [[InlineKeyboardButton("Вестерн", callback_data="western"), 
-                InlineKeyboardButton("Детектив", callback_data="detective")], 
+    keyboard = [[InlineKeyboardButton("Вестерн", callback_data="western"),
+                InlineKeyboardButton("Детектив", callback_data="detective")],
                 [InlineKeyboardButton("Дитячий", callback_data="children"),
                 InlineKeyboardButton("Документальний", callback_data="documentary")],
                 [InlineKeyboardButton("Драма", callback_data="drama"),
@@ -46,6 +42,7 @@ def main() -> None:
 
 if __name__ == '__main__':
     main()
+
 
 #англійскі назви
 #InlineKeyboardButton("Western", callback_data="western")
