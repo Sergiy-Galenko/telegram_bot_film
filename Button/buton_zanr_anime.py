@@ -2,99 +2,101 @@ import logging
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, CallbackContext
 
-import vibor
-
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
 TOKEN = "5845703570:AAFlOF_HbqpJtWfrplzbpBIh0lpmCyucPHo"
 
-#class ANIME():
+class AnimeBotHandler:
+    def __init__(self, token):
+        self.updater = Updater(token, use_context=True)
+        self.updater.dispatcher.add_handler(CommandHandler('anime', self.anime))
+        self.updater.dispatcher.add_handler(CallbackQueryHandler(self.button))
 
-def anime(update: Update, context: CallbackContext) -> None:
-    keyboard = [[InlineKeyboardButton("Кодомо", callback_data="Кодомо"),
-                 InlineKeyboardButton("Сьодзьо", callback_data="Сьодзьо")],
-                 [InlineKeyboardButton("Дзьосэй", callback_data="Дзьосэй"),
-                InlineKeyboardButton("Сьонэн", callback_data="Сьонэн")],
-                [InlineKeyboardButton("Сэйнэн", callback_data="Сэйнэн"),
-                InlineKeyboardButton("Традиційні жанри", callback_data="Традиційні жанри")],
-                [InlineKeyboardButton("Апокаліптика", callback_data="Апокаліптика"),
-                InlineKeyboardButton("Безумство", callback_data="Безумство")],
-                [InlineKeyboardButton("Біопанк", callback_data="Біопанк"),
-                InlineKeyboardButton("Бойовик", callback_data="Бойовик")],
-                [InlineKeyboardButton("Бойові мистецтва", callback_data="Бойові мистецтва"),
-                InlineKeyboardButton("Вампіри", callback_data="Вампіри")],
-                [InlineKeyboardButton("Військовий", callback_data="Військовий"),
-                InlineKeyboardButton("Гарем", callback_data="Гарем")],
-                [InlineKeyboardButton("Демони", callback_data="Демони"),
-                InlineKeyboardButton("Детектив", callback_data="Детектив")],
-                [InlineKeyboardButton("Добутсу", callback_data="Добутсу"),
-                InlineKeyboardButton("Драма", callback_data="Драма")],
-                [InlineKeyboardButton("Ігри", callback_data="Ігри"),
-                InlineKeyboardButton("Ідоли", callback_data="Ідоли")],
-                [InlineKeyboardButton("Ікудзі", callback_data="Ікудзі"),
-                InlineKeyboardButton("Ісекай", callback_data="Ісекай")],
-                [InlineKeyboardButton("Історичний", callback_data="Історичний"),
-                InlineKeyboardButton("Кайто", callback_data="Кайто")],
-                [InlineKeyboardButton("Кіберпанк", callback_data="Кіберпанк"),
-                InlineKeyboardButton("Комедія", callback_data="Комедія")],
-                [InlineKeyboardButton("Космічна опера", callback_data="Космічна опера"),
-                InlineKeyboardButton("Космос", callback_data="Космос")],
-                [InlineKeyboardButton("Магія", callback_data="Магія"),
-                InlineKeyboardButton("Махо-сёдзё", callback_data="Махо-сёдзё")],
-                [InlineKeyboardButton("Машини", callback_data="Машини"),
-                InlineKeyboardButton("Меха", callback_data="Меха")],
-                [InlineKeyboardButton("Містика", callback_data="Містика"),
-                InlineKeyboardButton("Моє", callback_data="Моє")],
-                [InlineKeyboardButton("Музика", callback_data="Музика"),
-                InlineKeyboardButton("Мильна опера", callback_data="Мильна опера")],
-                [InlineKeyboardButton("Отаку", callback_data="Отаку"),
-                InlineKeyboardButton("Парапсихологія", callback_data="Парапсихологія")],
-                [InlineKeyboardButton("Пародія", callback_data="Пародія"),
-                InlineKeyboardButton("Паропанк/Стімпанк", callback_data="Паропанк")],
-                [InlineKeyboardButton("Повсякденність", callback_data="Повсякденність"),
-                InlineKeyboardButton("Поліцейський бойовик", callback_data="Поліцейський бойовик")],
-                [InlineKeyboardButton("Поліція", callback_data="Поліція"),
-                InlineKeyboardButton("Постапокаліптика", callback_data="Постапокаліптика")],
-                [InlineKeyboardButton("Пригоди", callback_data="Пригоди"),
-                InlineKeyboardButton("Психологічний", callback_data="Психологічний")],
-                [InlineKeyboardButton("Психологічний трилер", callback_data="Психологічний трилер"),
-                InlineKeyboardButton("Реверс-гарем", callback_data="Реверс-гарем")],
-                [InlineKeyboardButton("Романтика", callback_data="Романтика"),
-                InlineKeyboardButton("Самураї", callback_data="Самураї")],
-                [InlineKeyboardButton("Самурайський бойовик", callback_data="Самурайський бойовик"),
-                InlineKeyboardButton("Сверхприродне", callback_data="Сверхприродне")],
-                [InlineKeyboardButton("Сёдзё-ай", callback_data="Сёдзё-ай"),
-                InlineKeyboardButton("Сёнэн-ай", callback_data="Сёнэн-ай")],
-                [InlineKeyboardButton("Казка", callback_data="Казка"),
-                InlineKeyboardButton("Спокон", callback_data="Спокон")],
-                [InlineKeyboardButton("Сэнтай", callback_data="Сэнтай"),
-                InlineKeyboardButton("Токусацу", callback_data="Токусацу")],
-                [InlineKeyboardButton("Трилер", callback_data="Трилер"),
-                InlineKeyboardButton("Жахи", callback_data="Жахи")],
-                [InlineKeyboardButton("Фантастика", callback_data="Фантастика"),
-                InlineKeyboardButton("Фентезі", callback_data="Фентезі")],
-                [InlineKeyboardButton("Школа", callback_data="Школа"),
-                InlineKeyboardButton("Шкільний детектив", callback_data="Шкільний детектив")],
-                [InlineKeyboardButton("Екшн", callback_data="Екшн")]]
+    def start(self) -> None:
+        self.updater.start_polling()
+        self.updater.idle()
 
-    reply_markup = InlineKeyboardMarkup(keyboard)
-    update.message.reply_text('Виберіть жанр аніме:', reply_markup=reply_markup)
+    def anime(self, update: Update, context: CallbackContext) -> None:
+        keyboard = [[InlineKeyboardButton("Кодомо", callback_data="Кодомо"),
+                     InlineKeyboardButton("Сьодзьо", callback_data="Сьодзьо")],
+                    [InlineKeyboardButton("Дзьосэй", callback_data="Дзьосэй"),
+                     InlineKeyboardButton("Сьонэн", callback_data="Сьонэн")],
+                    [InlineKeyboardButton("Сэйнэн", callback_data="Сэйнэн"),
+                     InlineKeyboardButton("Традиційні жанри", callback_data="Традиційні жанри")],
+                    [InlineKeyboardButton("Апокаліптика", callback_data="Апокаліптика"),
+                     InlineKeyboardButton("Безумство", callback_data="Безумство")],
+                    [InlineKeyboardButton("Біопанк", callback_data="Біопанк"),
+                     InlineKeyboardButton("Бойовик", callback_data="Бойовик")],
+                    [InlineKeyboardButton("Бойові мистецтва", callback_data="Бойові мистецтва"),
+                     InlineKeyboardButton("Вампіри", callback_data="Вампіри")],
+                    [InlineKeyboardButton("Військовий", callback_data="Військовий"),
+                     InlineKeyboardButton("Гарем", callback_data="Гарем")],
+                    [InlineKeyboardButton("Демони", callback_data="Демони"),
+                     InlineKeyboardButton("Детектив", callback_data="Детектив")],
+                    [InlineKeyboardButton("Добутсу", callback_data="Добутсу"),
+                     InlineKeyboardButton("Драма", callback_data="Драма")],
+                    [InlineKeyboardButton("Ігри", callback_data="Ігри"),
+                     InlineKeyboardButton("Ідоли", callback_data="Ідоли")],
+                    [InlineKeyboardButton("Ікудзі", callback_data="Ікудзі"),
+                     InlineKeyboardButton("Ісекай", callback_data="Ісекай")],
+                    [InlineKeyboardButton("Історичний", callback_data="Історичний"),
+                     InlineKeyboardButton("Кайто", callback_data="Кайто")],
+                    [InlineKeyboardButton("Кіберпанк", callback_data="Кіберпанк"),
+                     InlineKeyboardButton("Комедія", callback_data="Комедія")],
+                    [InlineKeyboardButton("Космічна опера", callback_data="Космічна опера"),
+                     InlineKeyboardButton("Космос", callback_data="Космос")],
+                    [InlineKeyboardButton("Магія", callback_data="Магія"),
+                     InlineKeyboardButton("Махо-сёдзё", callback_data="Махо-сёдзё")],
+                    [InlineKeyboardButton("Машини", callback_data="Машини"),
+                     InlineKeyboardButton("Меха", callback_data="Меха")],
+                    [InlineKeyboardButton("Містика", callback_data="Містика"),
+                     InlineKeyboardButton("Моє", callback_data="Моє")],
+                    [InlineKeyboardButton("Музика", callback_data="Музика"),
+                     InlineKeyboardButton("Мильна опера", callback_data="Мильна опера")],
+                    [InlineKeyboardButton("Отаку", callback_data="Отаку"),
+                     InlineKeyboardButton("Парапсихологія", callback_data="Парапсихологія")],
+                    [InlineKeyboardButton("Пародія", callback_data="Пародія"),
+                     InlineKeyboardButton("Паропанк/Стімпанк", callback_data="Паропанк")],
+                    [InlineKeyboardButton("Повсякденність", callback_data="Повсякденність"),
+                     InlineKeyboardButton("Поліцейський бойовик", callback_data="Поліцейський бойовик")],
+                    [InlineKeyboardButton("Поліція", callback_data="Поліція"),
+                     InlineKeyboardButton("Постапокаліптика", callback_data="Постапокаліптика")],
+                    [InlineKeyboardButton("Пригоди", callback_data="Пригоди"),
+                     InlineKeyboardButton("Психологічний", callback_data="Психологічний")],
+                    [InlineKeyboardButton("Психологічний трилер", callback_data="Психологічний трилер"),
+                     InlineKeyboardButton("Реверс-гарем", callback_data="Реверс-гарем")],
+                    [InlineKeyboardButton("Романтика", callback_data="Романтика"),
+                     InlineKeyboardButton("Самураї", callback_data="Самураї")],
+                    [InlineKeyboardButton("Самурайський бойовик", callback_data="Самурайський бойовик"),
+                     InlineKeyboardButton("Сверхприродне", callback_data="Сверхприродне")],
+                    [InlineKeyboardButton("Сёдзё-ай", callback_data="Сёдзё-ай"),
+                     InlineKeyboardButton("Сёнэн-ай", callback_data="Сёнэн-ай")],
 
-def button(update: Update, context: CallbackContext) -> None:
-    query = update.callback_query
-    query.answer()
-    genre = query.data
-    query.edit_message_text(text=f"Ви обрали жанр: {genre}")
+                    [InlineKeyboardButton("Казка", callback_data="Казка"),
+                     InlineKeyboardButton("Спокон", callback_data="Спокон")],
+                    [InlineKeyboardButton("Сэнтай", callback_data="Сэнтай"),
+                     InlineKeyboardButton("Токусацу", callback_data="Токусацу")],
+                    [InlineKeyboardButton("Трилер", callback_data="Трилер"),
+                     InlineKeyboardButton("Жахи", callback_data="Жахи")],
+                    [InlineKeyboardButton("Фантастика", callback_data="Фантастика"),
+                     InlineKeyboardButton("Фентезі", callback_data="Фентезі")],
+                    [InlineKeyboardButton("Школа", callback_data="Школа"),
+                     InlineKeyboardButton("Шкільний детектив", callback_data="Шкільний детектив")],
+                    [InlineKeyboardButton("Екшн", callback_data="Екшн")]]
 
-def main() -> None:
-    updater = Updater(TOKEN, use_context=True)
-    updater.dispatcher.add_handler(CommandHandler('anime', anime))
-    updater.dispatcher.add_handler(CallbackQueryHandler(button))
-    updater.start_polling()
-    updater.idle()
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        update.message.reply_text('Виберіть жанр аніме:', reply_markup=reply_markup)
+
+    def button(self, update: Update, context: CallbackContext) -> None:
+        query = update.callback_query
+        query.answer()
+        genre = query.data
+        query.edit_message_text(text=f"Ви обрали жанр: {genre}")
 
 if __name__ == '__main__':
-    main()
+    bot = AnimeBotHandler(TOKEN)
+    bot.start()
+
 
 #англійскі назви
 kodomo_button = InlineKeyboardButton("Kodomo", callback_data="kodomo")
