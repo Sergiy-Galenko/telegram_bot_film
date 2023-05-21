@@ -1,34 +1,20 @@
-import requests
-import random
+import requests, random
 
 class RandomSciFiSeries:
-    def __init__(self, api_key):
-        self.api_key = api_key
-
+    def __init__(self, api_key): self.api_key = api_key
     def get_random_sci_fi_series(self):
-        url = f"https://api.themoviedb.org/3/discover/tv?api_key={self.api_key}&with_genres=10765"
-        response = requests.get(url)
-        data = response.json()
-
+        data = requests.get(f"https://api.themoviedb.org/3/discover/tv?api_key={self.api_key}&with_genres=10765").json()
         if data['results']:
             random_series = random.choice(data['results'])
-            series_id = random_series['id']
-
-            series_details_url = f"https://api.themoviedb.org/3/tv/{series_id}?api_key={self.api_key}"
-            series_data = requests.get(series_details_url).json()
-
+            series_data = requests.get(f"https://api.themoviedb.org/3/tv/{random_series['id']}?api_key={self.api_key}").json()
             return {
                 'title': series_data['name'],
                 'poster': f"https://image.tmdb.org/t/p/original{series_data['poster_path']}",
                 'number_of_episodes': series_data['number_of_episodes'],
-                'url': f"https://www.themoviedb.org/tv/{series_id}"
+                'url': f"https://www.themoviedb.org/tv/{random_series['id']}"
             }
-
         return None
 
 api_key = '5c45b86ac58a42d9cfc4d98bedca011d'
-random_sci_fi_series = RandomSciFiSeries(api_key)
-series = random_sci_fi_series.get_random_sci_fi_series()
-if series:
-    for key, value in series.items():
-        print(f"{key.capitalize()}: {value}")
+series = RandomSciFiSeries(api_key).get_random_sci_fi_series()
+if series: [print(f"{key.capitalize()}: {value}") for key, value in series.items()]
