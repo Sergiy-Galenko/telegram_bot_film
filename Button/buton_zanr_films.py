@@ -12,43 +12,28 @@ class BotHandler:
         self.updater.dispatcher.add_handler(CommandHandler('film', self.film))
         self.updater.dispatcher.add_handler(CallbackQueryHandler(self.button))
 
-    def start(self) -> None:
+    def start(self):
         self.updater.start_polling()
         self.updater.idle()
 
-    def film(self, update: Update, context: CallbackContext) -> None:
-        keyboard = [[InlineKeyboardButton("Комедії", callback_data='Комедії'),
-                    InlineKeyboardButton("Жахи", callback_data='Жахи')],
-                    [InlineKeyboardButton("Драми", callback_data='Драми'),
-                    InlineKeyboardButton("Фантастика", callback_data='Фантастика')],
-                    [InlineKeyboardButton("Трилери", callback_data='Трилери'),
-                     InlineKeyboardButton("Бойовики", callback_data='Бойовики')],
-                    [InlineKeyboardButton("Історичний", callback_data="Історичний"),
-                    InlineKeyboardButton("Вестерн", callback_data="Вестерн")],
-                    [InlineKeyboardButton("Військовий", callback_data="Військовий"),
-                    InlineKeyboardButton("Кримінал", callback_data="Кримінал")],
-                    [InlineKeyboardButton("Детектив", callback_data="Детектив"),
-                    InlineKeyboardButton("Документальний", callback_data="Документальний")],
-                    [InlineKeyboardButton("Мелодрама", callback_data="Мелодрама"),
-                    InlineKeyboardButton("Музика", callback_data="Музика")],
-                    [InlineKeyboardButton("Мультфільм", callback_data="Мультфільм"),
-                    InlineKeyboardButton("Пригоди", callback_data="Пригоди")],
-                    [InlineKeyboardButton("Сімейний", callback_data="Сімейний"),
-                    InlineKeyboardButton("Телефільм", callback_data="Телефільм")],
-                    [InlineKeyboardButton("Фентезі", callback_data="Фентезі")]]
+    def film(self, update: Update, context: CallbackContext):
+        genres = ['Комедії', 'Жахи', 'Драми', 'Фантастика', 'Трилери', 'Бойовики', 'Історичний',
+                  'Вестерн', 'Військовий', 'Кримінал', 'Детектив', 'Документальний', 'Мелодрама',
+                  'Музика', 'Мультфільм', 'Пригоди', 'Сімейний', 'Телефільм', 'Фентезі']
 
-        reply_markup = InlineKeyboardMarkup(keyboard)
-        update.message.reply_text('Виберіть жанр фільму:', reply_markup=reply_markup)
+        keyboard = [[InlineKeyboardButton(genres[i], callback_data=genres[i]),
+                     InlineKeyboardButton(genres[i + 1], callback_data=genres[i + 1])]
+                    for i in range(0, len(genres), 2)]
 
-    def button(self, update: Update, context: CallbackContext) -> None:
+        update.message.reply_text('Виберіть жанр фільму:', reply_markup=InlineKeyboardMarkup(keyboard))
+
+    def button(self, update: Update, context: CallbackContext):
         query = update.callback_query
         query.answer()
-        genre = query.data
-        query.edit_message_text(text=f"Ви обрали жанр: {genre}")
+        query.edit_message_text(text=f"Ви обрали жанр: {query.data}")
 
 if __name__ == '__main__':
-    bot = BotHandler(TOKEN)
-    bot.start()
+    BotHandler(TOKEN).start()
 
 
 
