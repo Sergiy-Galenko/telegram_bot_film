@@ -71,7 +71,6 @@ class AnimeBotHandler:
                      InlineKeyboardButton("Сверхприродне", callback_data="Сверхприродне")],
                     [InlineKeyboardButton("Сёдзё-ай", callback_data="Сёдзё-ай"),
                      InlineKeyboardButton("Сёнэн-ай", callback_data="Сёнэн-ай")],
-
                     [InlineKeyboardButton("Казка", callback_data="Казка"),
                      InlineKeyboardButton("Спокон", callback_data="Спокон")],
                     [InlineKeyboardButton("Сэнтай", callback_data="Сэнтай"),
@@ -92,6 +91,14 @@ class AnimeBotHandler:
         query.answer()
         genre = query.data
         query.edit_message_text(text=f"Ви обрали жанр: {genre}")
+
+    def main(self, anime, button):
+        updater = Updater('5499590162:AAFyno0cbsJw12j_mfftTuX9dxebttvJPEM', use_context=True)
+        dp = updater.dispatcher
+        dp.add_handler(CommandHandler('anime', anime))
+        dp.add_handler(CallbackQueryHandler(button))
+        updater.start_polling()
+        updater.idle()
 
 if __name__ == '__main__':
     bot = AnimeBotHandler(TOKEN)

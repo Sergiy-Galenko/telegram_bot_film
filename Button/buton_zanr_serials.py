@@ -43,6 +43,14 @@ class BotHandler:
         genre = query.data
         query.edit_message_text(text=f"Ви обрали жанр: {genre}")
 
+    def main(self, serials, button):
+        updater = Updater('5499590162:AAFyno0cbsJw12j_mfftTuX9dxebttvJPEM', use_context=True)
+        dp = updater.dispatcher
+        dp.add_handler(CommandHandler('serials', serials))
+        dp.add_handler(CallbackQueryHandler(button))
+        updater.start_polling()
+        updater.idle()
+
 if __name__ == '__main__':
     bot = BotHandler(TOKEN)
     bot.start()
