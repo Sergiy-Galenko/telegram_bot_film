@@ -13,16 +13,15 @@ class TVSeries:
 
         if data['results']:
             random_series = random.choice(data['results'])
-            series_id = random_series['id']
 
-            series_details_url = f"{self.base_url}/tv/{series_id}?api_key={self.api_key}"
+            series_details_url = f"{self.base_url}/tv/{random_series['id']}?api_key={self.api_key}"
             series_data = requests.get(series_details_url).json()
 
             return {
                 'title': series_data['name'],
                 'poster': f"https://image.tmdb.org/t/p/original{series_data['poster_path']}",
                 'number_of_episodes': series_data['number_of_episodes'],
-                'url': f"https://www.themoviedb.org/tv/{series_id}"
+                'url': f"https://www.themoviedb.org/tv/{random_series['id']}"
             }
 
         return None

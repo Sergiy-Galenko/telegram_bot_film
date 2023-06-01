@@ -10,25 +10,15 @@ class SeriesFetcher:
         self.api_key = api_key
 
     def get_random_family_series(self):
-        url = f"{self.BASE_URL}/discover/tv?api_key={self.api_key}&with_genres=10751"
-        response = requests.get(url)
-        data = response.json()
+        random_series = random.choice(requests.get(f"{self.BASE_URL}/discover/tv?api_key={self.api_key}&with_genres=10751").json()['results'])
+        series_data = requests.get(f"{self.BASE_URL}/tv/{random_series['id']}?api_key={self.api_key}").json()
 
-        if data['results']:
-            random_series = random.choice(data['results'])
-            series_id = random_series['id']
-
-            series_details_url = f"{self.BASE_URL}/tv/{series_id}?api_key={self.api_key}"
-            series_data = requests.get(series_details_url).json()
-
-            return {
-                'title': series_data['name'],
-                'poster': f"{self.IMAGE_BASE_URL}{series_data['poster_path']}",
-                'number_of_episodes': series_data['number_of_episodes'],
-                'url': f"{self.SERIES_BASE_URL}/{series_id}"
-            }
-
-        return None
+        return {
+            'title': series_data['name'],
+            'poster': f"{self.IMAGE_BASE_URL}{series_data['poster_path']}",
+            'number_of_episodes': series_data['number_of_episodes'],
+            'url': f"{self.SERIES_BASE_URL}/{random_series['id']}"
+        }
 
 api_key = '5c45b86ac58a42d9cfc4d98bedca011d'
 fetcher = SeriesFetcher(api_key)

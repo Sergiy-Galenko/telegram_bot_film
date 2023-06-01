@@ -1,33 +1,20 @@
-import requests
-import random
+import requests, random
 
 class RandomKidsSeries:
     def __init__(self, api_key):
         self.api_key = api_key
-
     def get_random_kids_series(self):
-        url = f"https://api.themoviedb.org/3/discover/tv?api_key={self.api_key}&with_genres=10762"
-        response = requests.get(url)
-        data = response.json()
-
+        data = requests.get(f"https://api.themoviedb.org/3/discover/tv?api_key={self.api_key}&with_genres=10762").json()
         if data['results']:
-            random_series = random.choice(data['results'])
-            series_id = random_series['id']
-
-            series_details_url = f"https://api.themoviedb.org/3/tv/{series_id}?api_key={self.api_key}"
-            series_data = requests.get(series_details_url).json()
-
+            series = random.choice(data['results'])
+            series_data = requests.get(f"https://api.themoviedb.org/3/tv/{series['id']}?api_key={self.api_key}").json()
             return {
                 'title': series_data['name'],
                 'poster': f"https://image.tmdb.org/t/p/original{series_data['poster_path']}",
                 'number_of_episodes': series_data['number_of_episodes'],
-                'url': f"https://www.themoviedb.org/tv/{series_id}"
+                'url': f"https://www.themoviedb.org/tv/{series['id']}"
             }
 
-        return None
-
 api_key = '5c45b86ac58a42d9cfc4d98bedca011d'
-random_kids_series = RandomKidsSeries(api_key)
-series = random_kids_series.get_random_kids_series()
-if series:
+if (series := RandomKidsSeries(api_key).get_random_kids_series()):
     print(f"Title: {series['title']}\nPoster: {series['poster']}\nNumber of episodes: {series['number_of_episodes']}\nURL: {series['url']}")
