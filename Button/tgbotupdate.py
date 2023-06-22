@@ -1,11 +1,15 @@
-import dp as dp
-from aiogram.bot import bot
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import CommandHandler, CallbackQueryHandler, Updater, MessageHandler
-import random
+import logging
+from aiogram import Bot, types
+from aiogram.dispatcher import Dispatcher
+from aiogram.utils import executor
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
+from aiogram.dispatcher import FSMContext
+from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
 TOKEN = '5845703570:AAFlOF_HbqpJtWfrplzbpBIh0lpmCyucPHo'
 
+bot = Bot(token=TOKEN)
+dp = Dispatcher(bot, storage=MemoryStorage())
 
 DEFAULT_LANG = 'en'
 
@@ -14,27 +18,25 @@ messages = {
     'uk': {'hello': 'Привіт!', 'change_lang': 'Змінити мову'}
 }
 
-#@dp.message_handler(content_types=['text'])
-#dp.add_handler(CommandHandler('start', start))
-
 def get_keyboard():
     keyboard = [
         [InlineKeyboardButton("Change language", callback_data='change_lang')]
     ]
     return InlineKeyboardMarkup(keyboard)
 
-def start(update, context):
+@dp.message_handler(commands=['start'])
+async def start(message: types.Message):
     pass
 
-def change_lang(update, context):
-    update.callback_query.message.edit_text(text=messages[DEFAULT_LANG]['change_lang'], reply_markup=get_language_keyboard())
+@dp.callback_query_handler(text='change_lang')
+async def change_lang(call: types.CallbackQuery):
+    await bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text=messages[DEFAULT_LANG]['change_lang'], reply_markup=get_language_keyboard())
 
-def select_language(update, context):
-    query = update.callback_query
-    lang = query.data
+@dp.callback_query_handler(lambda c: c.data and c.data in ['en', 'uk'])
+async def select_language(call: types.CallbackQuery):
     global DEFAULT_LANG
-    DEFAULT_LANG = langІ
-    query.message.edit_text(text=messages[DEFAULT_LANG]['hello'], reply_markup=get_keyboard())
+    DEFAULT_LANG = call.data
+    await bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text=messages[DEFAULT_LANG]['hello'], reply_markup=get_keyboard())
 
 def get_language_keyboard():
     keyboard = [
@@ -46,60 +48,49 @@ def get_language_keyboard():
     return InlineKeyboardMarkup(keyboard)
 
 def main():
-    updater = Updater(TOKEN, use_context=True)
-    dispatcher = updater.dispatcher
-    dispatcher.add_handler(CommandHandler("start", start))
-    dispatcher.add_handler(CallbackQueryHandler(change_lang, pattern='^change_lang$'))
-    dispatcher.add_handler(CallbackQueryHandler(select_language, pattern='^(en|uk)$'))
-    updater.start_polling()
-    updater.idle()
+    executor.start_polling(dp, skip_updates=True)
 
 if __name__ == "__main__":
     main()
 
-    def news(update, context):
-        news_url = "https://example.com/news"
-        message = "Останні оновлення бота".format(news_url)
-        keyboard = [[InlineKeyboardButton("Читати", url=news_url)]]
-        reply_markup = InlineKeyboardMarkup(keyboard)
-        context.bot.send_message(chat_id=update.message.chat_id, text=message, reply_markup=reply_markup)
-
+@dp.message_handler(commands=['news'])
+async def news(message: types.Message):
+    news_url = "https://example.com/news"
+    message = "Останні оновлення бота".format(news_url)
+    keyboard = [[InlineKeyboardButton("Читати", url=news_url)]]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    await bot.send_message(chat_id=message.chat.id, text=message, reply_markup=reply_markup)
 
 def find_film(name, year):
     pass
 
-try:
+@dp.message_handler(commands=['find_film'])
+async def find_film_handler(message: types.Message):
+    try:
+        film = find_film(name='Название фильма', year='')
+    except Exception as e:
+        await bot.send_message(chat_id=message.chat.id, text='Произошла ошибка: {}'.format(str(e)))
 
-    film = find_film(name='Название фильма', year='')
-except Exception as e:
-    bot.send_message(chat_id='ваш_chat_id', text='Произошла ошибка: {}'.format(str(e)))
-
-# функция для обработки сообщения юзера
-def count(update, context):
-    # Получаем список всех подписчиков
-    subscribers = bot.get_chat_members_count(chat_id=update.effective_chat.id)
-    # Записываем количество подписчиков в текстовый файл
+@dp.message_handler(commands=['count'])
+async def count(message: types.Message):
+    subscribers = await bot.get_chat_members_count(chat_id=message.chat.id)
     with open('subscribers.txt', 'a') as file:
         file.write(f'Количество подписчиков: {subscribers}\n')
 
-# функция с номером телефона
-def phone_number(update, context):
-    # получатель номер телефона
-    phone_number = update.message.contact.phone_number
-    # получатель имя юзера
-    username = update.message.contact.first_name
-    # счетчик нажатия кнопки подписаться
-    registr = update.message.contact.registr
-    # Записываем данные в текстовый файл
+@dp.message_handler(content_types=['contact'])
+async def phone_number(message: types.Message):
+    phone_number = message.contact.phone_number
+    username = message.contact.first_name
     with open('subscribers.txt', 'a') as file:
         file.write(f'{username}: {phone_number}\n')
 
-# Конфигурация логгирования
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                      level=logging.INFO)
 
 logger = logging.getLogger(__name__)
 
+
+"""
 # Словарь для хранения информации о пользователях
 #users = {}
 
@@ -121,6 +112,8 @@ logger = logging.getLogger(__name__)
     #with open('log.txt', 'a') as file:
      #   file.write(f"Login: {users[user_id]['login']}, Phone number: {users[user_id]['phone_number']}, "
       #             f"Count: {users[user_id]['count']}\n")
+"""
+
 
 
 
