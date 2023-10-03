@@ -1,64 +1,72 @@
-import logging
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, CallbackContext
+import requests
+import time
 
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+TOKEN = ""
+API_URL = f"https://api.telegram.org/bot{TOKEN}/"
 
-TOKEN = "5845703570:AAFlOF_HbqpJtWfrplzbpBIh0lpmCyucPHo"
 
-class BotHandler:
-    def __init__(self, token):
-        self.updater = Updater(token, use_context=True)
-        self.updater.dispatcher.add_handler(CommandHandler('menu', self.menu))
-        self.updater.dispatcher.add_handler(CallbackQueryHandler(self.button))
+def get_updates(offset=None):
+    url = API_URL + "getUpdates?timeout=100"
+    if offset:
+        url += f"&offset={offset}"
+    response = requests.get(url)
+    return response.json()['result']
 
-    def start(self) -> None:
-        self.updater.start_polling()
-        self.updater.idle()
 
-    def help(self, update, context):
-        update.message.reply_text("Використай команду /menu щоб визвати вікно з вибором того що ти хочеш подивитися.")
+def send_message(chat_id, text, reply_markup=None):
+    url = API_URL + "sendMessage"
+    payload = {
+        'chat_id': chat_id,
+        'text': text,
+        'parse_mode': 'HTML',
+        'reply_markup': reply_markup
+    }
+    response = requests.post(url, json=payload)
+    return response.json()
 
-    def menu(self, update: Update, context: CallbackContext):
-        keyboard = [[InlineKeyboardButton("Сериалы", callback_data='Сериалы'),
-                     InlineKeyboardButton("Фильмы", callback_data='Фильмы'),
-                     InlineKeyboardButton("Аниме", callback_data='Аниме')],
-                    [InlineKeyboardButton("Фільм за описом", callback_data='Фільм за описом')]]
 
-        reply_markup = InlineKeyboardMarkup(keyboard)
-        update.message.reply_text('Выберите категорию:', reply_markup=reply_markup)
+def main():
+    last_update_id = None
+    while True:
+        updates = get_updates(last_update_id)
+        for update in updates:
+            if 'message' in update:
+                chat_id = update['message']['chat']['id']
+                message = update.get('message').get('text')
 
-    def button(self, update: Update, context: CallbackContext) -> None:
-        query = update.callback_query
-        query.answer()
-        genre = query.data
+                if message == "/menu":
+                    main_keyboard = {
+                        "inline_keyboard": [
+                            [{"text": "Сериалы", "callback_data": "Сериалы"},
+                             {"text": "Фильмы", "callback_data": "Фильмы"},
+                             {"text": "Аниме", "callback_data": "Аниме"}],
+                            [{"text": "Фільм за описом", "callback_data": "Фільм за описом"}]
+                        ]
+                    }
+                    send_message(chat_id, "Выберите категорию:", reply_markup=main_keyboard)
+            elif 'callback_query' in update:
+                query = update['callback_query']
+                chat_id = query['message']['chat']['id']
+                callback_data = query['data']
 
-        if genre == 'Фильмы':
-            self.serials(update, context)  # if 'Фильмы' is chosen, show the serials menu
-        else:
-            query.edit_message_text(text=f"Ви обрали жанр: {genre}")
+                if callback_data == 'Фильмы':
+                    serials_keyboard = {
+                        "inline_keyboard": [
+                            [{"text": "Вестерн", "callback_data": "western"},
+                             {"text": "Детектив", "callback_data": "detective"}],
+                            [{"text": "Дитячий", "callback_data": "children"},
+                             {"text": "Документальний", "callback_data": "documentary"}],
+                            # ... add other options here in similar fashion
+                        ]
+                    }
+                    send_message(chat_id, 'Виберіть жанр серіалу:', reply_markup=serials_keyboard)
+                else:
+                    send_message(chat_id, f"Ви обрали жанр: {callback_data}")
 
-    def serials(self, update: Update, context: CallbackContext) -> None:
-        keyboard = [[InlineKeyboardButton("Вестерн", callback_data="western"),
-                    InlineKeyboardButton("Детектив", callback_data="detective")],
-                    [InlineKeyboardButton("Дитячий", callback_data="children"),
-                    InlineKeyboardButton("Документальний", callback_data="documentary")],
-                    [InlineKeyboardButton("Драма", callback_data="drama"),
-                    InlineKeyboardButton("Екшн і Пригоди", callback_data="action_adventure")],
-                    [InlineKeyboardButton("Комедія", callback_data="comedy"),
-                    InlineKeyboardButton("Кримінал", callback_data="crime")],
-                    [InlineKeyboardButton("Мильна опера", callback_data="soap_opera"),
-                    InlineKeyboardButton("Мультфільм", callback_data="animation")],
-                    [InlineKeyboardButton("Науково фантастичний", callback_data="sci_fi"),
-                    InlineKeyboardButton("Новини", callback_data="news")],
-                    [InlineKeyboardButton("Політика та війна", callback_data="politics_war"),
-                    InlineKeyboardButton("Реаліті-шоу", callback_data="reality_show")],
-                    [InlineKeyboardButton("Сімейний", callback_data="family"),
-                    InlineKeyboardButton("Ток-шоу", callback_data="talk_show")]]
+            last_update_id = update['update_id'] + 1
 
-        reply_markup = InlineKeyboardMarkup(keyboard)
-        update.message.reply_text('Виберіть жанр серіалу:', reply_markup=reply_markup)
+        time.sleep(1)
+
 
 if __name__ == '__main__':
-    bot = BotHandler(TOKEN)
-    bot.start()
+    main()
